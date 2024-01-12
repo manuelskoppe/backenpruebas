@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Foro de Discusión</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Enlaces a CSS y cualquier otro contenido del head necesario -->
+ <link rel="stylesheet" href="/estilos.css">
+
+</head>
+<body>
+  <nav>
+    <!-- Tu barra de navegación aquí -->
+  </nav>
+
+  <main>
+    <h1>Foro de Frustración</h1>
+    <section id="posts">
+      {{#each posts}}
+  <article class="post">
+    <header>
+      <h2><a href="/forum/post/{{this.id}}">Post de {{this.user.username}}</a></h2>
+      <form action="/forum/post/{{this.id}}/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete this post?');">
+  <button type="submit">Eliminar Post</button>
+</form>
+
+      <p>Publicado el {{this.createdAt}} Por el usuario: {{this.user.username}}</p>
+  
+    </header>
+    <p>{{this.body}}</p>
+    
+ 
+  </article>
+{{else}}
+  <p>No hay posts para mostrar en el foro.</p>
+{{/each}}
+
+    </section>
+
+  <form action="/forum/create-post" method="POST" enctype="multipart/form-data">
+  <textarea name="body" placeholder="Escribe tu post aquí..." required></textarea>
+  <input type="number" name="frustrationLevel" placeholder="Nivel de frustración (1-10)" required min="1" max="10">
+  <input type="file" name="image" accept="image/png, image/jpeg">
+  <button type="submit">Publicar Post</button>
+</form>
+
+  </main>
+
+</body>
+</html>

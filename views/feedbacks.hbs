@@ -1,0 +1,8 @@
+<h1>Pagina de Feedbacks de los alumnos</h1>
+
+<ul>
+  {{#each feedbacks}}
+    <li> <img src={{this.user.photo}} alt="photo-student" width="50px" style="border-radius: 100%;">
+      {{this.body}} - {{this.frustrationLevel}} - {{this.user.email}}</li>
+  {{/each}}
+</ul>

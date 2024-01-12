@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{post.user.username}}'s Post</title>
+  <!-- ... other head elements ... -->
+  <style>
+    .reply-comment-item {
+      margin-left: 20px;
+      border-left: 2px solid #ccc;
+      padding-left: 10px;
+      color: #444;
+    }
+    .edit-form, #edit-post-form {
+      display: none;
+    }
+    .comment-actions button {
+      display: inline-block; /* Muestra los botones en línea */
+      margin-right: 5px; /* Espacio entre los botones */
+    }
+    /* New style for post content */
+    .post-content {
+      margin-bottom: 20px;
+      padding: 10px;
+      background-color: #f8f8f8;
+      border-left: 4px solid #ccc;
+    }
+    .post-content strong {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 1.1em;
+    }
+    .edit-post {
+      display: block;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <article class="post">
+      <header>
+        <h1>{{post.user.username}}'s Post</h1>
+        <p>Publicado el {{post.createdAt}}</p>
+      </header>
+
+      <!-- New div for post content with a clear label -->
+<div class="post-content">
+  <strong>Contenido del post: {{post.user.username}}</strong>
+  <p>{{post.body}}</p>
+  <!-- Check if there is an imageUrl and display it -->
+  {{#if post.imageUrl}}
+    <img src="{{post.imageUrl}}" alt="Imagen del post" />
+  {{/if}}
+</div>
+
+
+      <!-- Button to edit the main post, moved below the post content -->
+      <button class="edit-post" data-post-id="{{post.id}}">Editar Post</button>
+      
+      <!-- Formulario para editar el post principal -->
+      <div class="edit-form" id="edit-post-form">
+        <form action="/forum/post/{{post.id}}/edit" method="POST">
+          <textarea name="editedPost" required>{{post.body}}</textarea>
+          <button type="submit">Guardar Cambios</button>
+        </form>
+      </div>
+    </article>
+
+    <section id="comments">
+  <h2>Comentarios</h2>
+  {{#if post.comments}}
+    <ul>
+      {{#each post.comments}}
+        <li class="{{#if this.parentId}}reply-comment-item{{/if}}">
+          {{this.user.username}}: {{this.body}}
+          {{#if this.imageUrl}}
+            <img src="{{this.imageUrl}}" alt="Comment image" style="max-width: 100px; max-height: 100px;">
+          {{/if}}
+          <!-- Botón para responder al comentario -->
+          <button class="reply-comment" data-comment-id="{{this.id}}">Responder</button>
+          <!-- Botón para editar el comentario -->
+          <button class="edit-comment" data-comment-id="{{this.id}}">Editar</button>
+          <!-- Botón para eliminar el comentario, ahora justo después del botón de editar -->
+          <button class="delete-comment" data-comment-id="{{this.id}}">Eliminar</button>
+          
+       <div class="reply-form" id="reply-form-{{this.id}}" style="display:none;">
+  <form action="/comments/comment/{{this.id}}/reply" method="POST" enctype="multipart/form-data">
+    <textarea name="reply" placeholder="Responder a este comentario..." required></textarea>
+    <!-- Campo para subir imagen -->
+    <input type="file" name="replyImage" accept="image/*">
+    <button type="submit">Enviar Respuesta</button>
+  </form>
+</div>
+
+          </div>
+          <div class="edit-form" id="edit-form-{{this.id}}" style="display:none;">
+            <form action="/comments/comment/{{this.id}}/edit" method="POST">
+              <textarea name="editedComment" required>{{this.body}}</textarea>
+              <button type="submit">Guardar Cambios</button>
+            </form>
+          </div>
+        </li>
+      {{/each}}
+    </ul>
+  {{else}}
+    <p>Sé el primero en comentar.</p>
+  {{/if}}
+</section>
+
+
+    <form action="/comments/post/{{post.id}}/comment" method="POST" enctype="multipart/form-data">
+
+      <textarea name="comment" placeholder="Añade un comentario..." required></textarea>
+      <input type="file" name="image" accept="image/*">
+      <button type="submit">Enviar Comentario</button>
+    </form>
+  </main>
+  <script>
+    document.querySelectorAll('.reply-comment').forEach(button => {
+      button.addEventListener('click', function() {
+        const commentId = this.getAttribute('data-comment-id');
+        document.getElementById(`reply-form-${commentId}`).style.display = 'block';
+      });
+    });
+
+    document.querySelectorAll('.edit-comment').forEach(button => {
+      button.addEventListener('click', function() {
+        const commentId = this.getAttribute('data-comment-id');
+        document.getElementById(`edit-form-${commentId}`).style.display = 'block';
+      });
+    });
+     // Función y manejador para eliminar comentarios
+    document.querySelectorAll('.delete-comment').forEach(button => {
+      button.addEventListener('click', function() {
+        const commentId = this.getAttribute('data-comment-id');
+        if (confirm('¿Estás seguro de que quieres eliminar este comentario?')) {
+          deleteComment(commentId);
+        }
+      });
+    });
+
+    function deleteComment(commentId) {
+      // Cambia la ruta de acuerdo a tu configuración del servidor para eliminar comentarios
+      fetch(`/comments/comment/${commentId}/delete`, { 
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          // Agrega cualquier encabezado de autenticación si es necesario
+        },
+        credentials: 'same-origin'
+      })
+      .then(response => {
+        if (response.ok) {
+          // Elimina el comentario del DOM o recarga la página
+          location.reload(); // Esto recargará la página, quitando el comentario eliminado
+        } else {
+          console.error('Error al eliminar el comentario');
+        }
+      })
+      .catch(error => console.error('Error:', error));
+    }
+// Manjeador de evento para editar el post principal
+    document.querySelector('.edit-post').addEventListener('click', function() {
+      document.getElementById('edit-post-form').style.display = 'block';
+    });
+
+  </script>
+</body>
+</html> 

@@ -1,0 +1,35 @@
+<form action="/profile?_method=PUT" method="POST" enctype="multipart/form-data">
+  <label for="username">
+    Username:
+    <input type="text" name="username" placeholder="Username" value="{{user.username}}">
+  </label>
+  
+  <label for="email">
+    Email:
+    <input type="email" name="email" placeholder="Email" value="{{user.email}}">
+  </label>
+  
+  <label for="photo">
+    Photo:
+    <input type="file" name="photo">
+  </label>
+  
+  <label for="country">
+    País de origen:
+    <input type="text" name="country" placeholder="País de origen" value="{{user.country}}">
+  </label>
+  
+  <label for="age">
+    Edad:
+    <input type="number" name="age" placeholder="Edad" value="{{user.age}}">
+  </label>
+  
+  <label for="profession">
+    Profesión:
+    <input type="text" name="profession" placeholder="Profesión" value="{{user.profession}}">
+  </label>
+  
+  <input type="submit" value="Actualizar Perfil">
+
+  
+</form>

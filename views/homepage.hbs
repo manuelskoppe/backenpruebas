@@ -1,0 +1,22 @@
+<h1>Weekloud</h1>
+
+<form action="/feedback" method="post">
+  <label for="feedback">
+    Feedback:
+    <textarea name="feedback" type="text" placeholder="How was your week?" cols="100" rows="10"></textarea>
+  </label>
+
+  <label for="frustration-level">
+    Frustration level:
+    <input type="range" name="frustration-level" min="1" max="5" step="1">
+  </label>
+  <input type="submit" value="Send me weekly">
+</form>
+
+{{#if error}}
+  <p style="color: red">{{error}}</p>
+{{/if}}
+
+{{#if message}}
+  <p style="color: green">{{message}}</p>
+{{/if}}

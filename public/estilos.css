@@ -1,0 +1,101 @@
+/* Estilo general para el cuerpo de la página */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Encabezado del foro */
+  .header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    text-align: center;
+  }
+  
+  /* Título del post y metadata */
+  .post-title,
+  .post-meta {
+    text-align: center;
+    padding: 5px 0;
+  }
+  
+  /* Estilo para la sección de comentarios */
+  .comments-section {
+    margin: 20px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  
+  /* Estilo para cada comentario */
+  .comment {
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+  }
+  
+  /* Último comentario sin borde inferior */
+  .comment:last-child {
+    border-bottom: none;
+  }
+  
+  /* Detalles del usuario que comentó */
+  .comment-user {
+    font-weight: bold;
+  }
+  
+  /* Botones de acción para cada comentario */
+  .comment-actions {
+    text-align: right;
+  }
+  
+  /* Botón para añadir un nuevo comentario */
+  .add-comment {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin: 20px 0;
+    background-color: #5cb85c;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+  
+  /* Estilo para el botón de enviar comentario */
+  .submit-comment {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  /* Mejoras visuales para el input de comentario */
+  .comment-input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  /* Mejoras visuales para imágenes de perfil */
+  .profile-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  /* Ajustes para visualización responsiva */
+  @media (max-width: 768px) {
+    .comments-section {
+      margin: 10px;
+    }
+  }
+  

@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String      @id @default(uuid())
+  email       String      @unique
+  username    String?     @unique
+  password    String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  photo       String?
+  posts       Post[]      // Relations to Post
+  forumPosts  ForumPost[] // Relations to ForumPost
+  comments    Comment[]   // Relations to Comment - this is the added line
+  isAdmin     Boolean     @default(false)
+  country    String? // Campo opcional para el país de origen
+  age        Int?    // Campo opcional para la edad
+  profession String? // Campo opcional para la profesión
+}
+
+model Post {
+  id                String    @id @default(uuid())
+  userId            String
+  body              String
+  frustrationLevel  Int
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  user              User      @relation(fields: [userId], references: [id])
+  comments          Comment[] // One-to-many relation to Comment
+  imageUrl          String?   // Campo opcional para la URL de la imagen
+}
+
+model ForumPost {
+  id                String   @id @default(uuid())
+  userId            String
+  body              String
+  frustrationLevel  Int
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id])
+}
+model Comment {
+  id        String    @id @default(uuid())
+  postId    String
+  body      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  imageUrl  String?   // Campo opcional para la URL de la imagen
+  post      Post      @relation(fields: [postId], references: [id])
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  
+  parentId  String?   @map("parent_id")
+  parent    Comment?  @relation("CommentToComment", fields: [parentId], references: [id])
+  replies   Comment[] @relation("CommentToComment")
+
+  @@map(name: "comment_delete")
+}

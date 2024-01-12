@@ -1,0 +1,24 @@
+<h1>Profile page</h1>
+<a href="/profile/update">Update profile</a>
+<div>
+  {{#if user}}
+    {{#if user.photo}}
+      <img src="{{user.photo}}" alt="user-image" style="width: 50px; border-radius: 50px">
+    {{/if}}
+    <p>username: {{user.username}}</p>
+    <p>email: {{user.email}}</p>
+    <p>País de origen: {{user.country}}</p> <!-- Agrega esta línea -->
+    <p>Edad: {{user.age}}</p> <!-- Agrega esta línea -->
+    <p>Profesión: {{user.profession}}</p> <!-- Agrega esta línea -->
+  {{/if}}
+</div>
+<ul>
+  {{#each weeklies}}
+    <li>
+      body: {{this.body}} - frustration: {{this.frustrationLevel}}
+    </li>
+  {{/each}}
+  <form action="/auth/logout" method="POST" style="margin-top: 20px;">
+  <input type="submit" value="Cerrar Sesión">
+</form>
+</ul>
